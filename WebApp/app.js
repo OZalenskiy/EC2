@@ -1,5 +1,7 @@
 const http = require('http');
 const AWS = require('aws-sdk');
+const { appendFile } = require('fs');
+const { equal } = require('assert');
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -8,7 +10,12 @@ const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   
-  res.end('region' + AWS.config.region);
+  if (req.url == "/aws-sdk") {
+    res.end(`region: ${AWS.config.region}`)
+  } else {
+    res.end("Home");
+  }
+  
 });
 
 server.listen(port, hostname, () => {
